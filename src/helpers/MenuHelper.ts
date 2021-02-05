@@ -25,56 +25,57 @@ export const MenuNotifications = {
 
 export class MenuHelper {
 
-  private static menuDefinitions: IMenuDefinition[] = [];
-  private static menuStructure: { [key: string]: { [key: string]: string[] } } = {}
+  private menuDefinitions: IMenuDefinition[] = [];
+  private menuStructure: { [key: string]: { [key: string]: string[] } } = {}
+  private notifications: TinyEmitter = new TinyEmitter();
+  private static instance = new MenuHelper();
+  public get Notifications() { return this.notifications; }
+  public static get Instance() { return MenuHelper.instance }
 
-  private static notifications: TinyEmitter = new TinyEmitter();
-  public static get Notifications() { return MenuHelper.notifications; }
-
-  public static addMenuDefinition(menuDefinition: IMenuDefinition, ...positions: { section: menuType, parent?: string }[]) {
+  public addMenuDefinition(menuDefinition: IMenuDefinition, ...positions: { section: menuType, parent?: string }[]) {
 
     // Aggiungo la dichiarazione del menuù all'elenco dei menù disponibili.
-    let found = MenuHelper.menuDefinitions.find(m => m.name == menuDefinition.name);
+    let found = this.menuDefinitions.find(m => m.name == menuDefinition.name);
     if (!found)
-      MenuHelper.menuDefinitions.push(menuDefinition);
+      this.menuDefinitions.push(menuDefinition);
     else
       menuDefinition = found;
 
     for (const element of positions) {
 
-      MenuHelper.menuStructure[element.section] = MenuHelper.menuStructure[element.section] || {};
-      MenuHelper.menuStructure[element.section][element.parent || menuDefinition.name] = MenuHelper.menuStructure[element.section][element.parent || menuDefinition.name] || [];
+      this.menuStructure[element.section] = this.menuStructure[element.section] || {};
+      this.menuStructure[element.section][element.parent || menuDefinition.name] = this.menuStructure[element.section][element.parent || menuDefinition.name] || [];
 
       if (element.parent)
-        MenuHelper.menuStructure[element.section][element.parent].push(menuDefinition.name);
+        this.menuStructure[element.section][element.parent].push(menuDefinition.name);
     }
 
-    MenuHelper.notifications.emit(MenuNotifications.menuDefinitionAdded, menuDefinition);
+    this.notifications.emit(MenuNotifications.menuDefinitionAdded, menuDefinition);
   }
 
-  public static getMenuItem(name: string): IMenuDefinition | undefined {
-    return MenuHelper.menuDefinitions.find(i => i.name == name);
+  public getMenuItem(name: string): IMenuDefinition | undefined {
+    return this.menuDefinitions.find(i => i.name == name);
   }
 
-  public static getMenu(menu: menuType): { item: IMenuDefinition | undefined, children: (IMenuDefinition | undefined)[] }[] {
+  public getMenu(menu: menuType): { item: IMenuDefinition | undefined, children: (IMenuDefinition | undefined)[] }[] {
     let result: { item: IMenuDefinition | undefined, children: (IMenuDefinition | undefined)[] }[] = [];
     let used = new Set<string>();
 
-    for (const key in MenuHelper.menuStructure[menu]) {
-      const element = MenuHelper.menuStructure[menu][key];
+    for (const key in this.menuStructure[menu]) {
+      const element = this.menuStructure[menu][key];
 
 
       let rr = {
-        item: MenuHelper.menuDefinitions.find(m => {
+        item: this.menuDefinitions.find(m => {
           return m.name == key &&
             (!m.hidden || !m.hidden())
         }),
 
-        children: element.map(i => MenuHelper.menuDefinitions.find(m => m.name == i && (!m.hidden || !m.hidden())))
+        children: element.map(i => this.menuDefinitions.find(m => m.name == i && (!m.hidden || !m.hidden())))
           .filter(i => !!i)
           .sort((a, b) => {
-            if (a?.orderIndex && b?.orderIndex && a.orderIndex > b.orderIndex) return 1;
-            if (a?.orderIndex && b?.orderIndex && a.orderIndex < b.orderIndex) return -1;
+            if (a && b && a.orderIndex && b.orderIndex && a.orderIndex > b.orderIndex) return 1;
+            if (a && b && a.orderIndex && b.orderIndex && a.orderIndex < b.orderIndex) return -1;
             return 0
           })
       };
@@ -87,11 +88,10 @@ export class MenuHelper {
     }
     return result.filter(i => !!i.item)
       .sort((a, b) => {
-        if (a?.item?.orderIndex && b?.item?.orderIndex && a.item.orderIndex > b.item.orderIndex) return 1;
-        if (a?.item?.orderIndex && b?.item?.orderIndex && a.item.orderIndex < b.item.orderIndex) return -1;
+        if (a && b && a.item && b.item && a.item.orderIndex && b.item.orderIndex && a.item.orderIndex > b.item.orderIndex) return 1;
+        if (a && b && a.item && b.item && a.item.orderIndex && b.item.orderIndex && a.item.orderIndex < b.item.orderIndex) return -1;
         return 0
       });
   }
-
 }
 

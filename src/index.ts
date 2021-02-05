@@ -1,25 +1,51 @@
-import { RouteConfig } from "vue-router";
-import { Store } from "vuex"
 import { IMenuDefinition, MenuHelper, menuType } from "./helpers/MenuHelper";
+import { CommonRegistry } from "./helpers/CommonRegistry";
+import { MessageService } from "./helpers/MessageService";
+import { IRouteConfig } from "./interfaces/RouterInterfaces";
+import { IStore } from "./interfaces/StoreInterfaces";
 
 export {
   MenuHelper,
   IMenuDefinition,
-  menuType
+  menuType,
+  CommonRegistry,
+  MessageService
 }
 
 export interface IModuleInitializer {
   init(menu: MenuHelper,
-    store: Store<any>,
+    store: IStore,
     configuration: any): void,
-  routes: RouteConfig[]
+  routes: IRouteConfig[]
 }
 
-export class ModuleInitializer {
-  constructor(
-    public init: (menu: MenuHelper, store: Store<any>, configuration: any) => void,
-    public routes: RouteConfig[]) {
-  }
+interface IModuleInitializerWrapper {
+  init(menu: MenuHelper,
+    store: IStore,
+    configuration: any, registry: CommonRegistry, messageService: MessageService): void,
+  routes: IRouteConfig[]
+}
+
+export function ModuleInitializer(opts: IModuleInitializer) {
+  return {
+    init(menu: MenuHelper, store: IStore, configuration: any, registry: CommonRegistry, messageService: MessageService) {
+      if (registry)
+      CommonRegistry.Instance = registry;
+
+      if (messageService)
+        MessageService.Instance = messageService;
+
+      opts.init(menu, store, configuration);
+    },
+    routes: opts.routes
+  } as IModuleInitializerWrapper
+}
+
+export function InitModule(module: any, store: IStore, configuration: any | undefined) {
+  var initobj = module.default.default as IModuleInitializerWrapper;
+  initobj.init(MenuHelper.Instance, store, configuration || {}, CommonRegistry.Instance, MessageService.Instance);
+
+  return initobj as IModuleInitializer;
 }
 
 
