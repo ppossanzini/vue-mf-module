@@ -69,7 +69,7 @@ export function ModuleInitializer(opts: IModuleInitializer) {
 }
 
 export function InitModule(module: any, store: IStore, configuration: any | undefined) {
-  var initobj = module.default.default as IModuleInitializerWrapper;
+  var initobj = (module.default.default || module.default) as IModuleInitializerWrapper;
   initobj.init(MenuHelper.Instance, store, configuration || {}, {
     registry: CommonRegistry.Instance,
     messageService: MessageService.Instance,

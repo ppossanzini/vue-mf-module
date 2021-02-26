@@ -22,9 +22,10 @@ export default {
 
 export class ScreensManager {
   private static instance = new ScreensManager();
-  static get Instance() :ScreensManager{ return ScreensManager.instance }
+  static get Instance(): ScreensManager { return ScreensManager.instance }
   static set Instance(v: ScreensManager) { this.instance = v; }
   private screens = new Map<string, Element>();
+  
 
   injectTo(domElement: Element, screen: string) {
     if (!domElement || !screen) return;
@@ -39,7 +40,7 @@ export class ScreensManager {
     try { if (element) element.removeChild(domElement) } catch { }
   }
 
-  setScreen(screen, name: string = "default") {
+  setScreen(screen, name: string = "defaultscreen") {
     this.screens.set(name, screen);
   }
 }

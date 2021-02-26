@@ -7,19 +7,19 @@ export interface IProjectableModel<T> {
 
 export class Projector {
   private static instance = new Projector();
-  static get Instance() :Projector { return Projector.instance }
+  static get Instance(): Projector { return Projector.instance }
   static set Instance(v: Projector) { this.instance = v; }
 
   private screens = new Map<string, Screen>();
   private projecting = new Map<string, { component: Vue, model: IProjectableModel<any>, promise: Promise<any> | null, queue: boolean }[]>();
 
-  setScreen(screen, name: string = "default") {
+  setScreen(screen, name: string = "defaultscreen") {
     this.screens.set(name, screen);
   }
 
 
 
-  projectTo<T>(component: Vue, data: T, screen: string = "default", queue: boolean = false, async: boolean = false): Promise<T> | null {
+  projectTo<T>(component: Vue, data: T | null = null, screen: string = "defaultscreen", queue: boolean = false, async: boolean = false): Promise<T> | null {
     var model = { data } as IProjectableModel<T>;
     let promise = async ? new Promise<T>((resolve, reject) => { model.reject = reject; model.resolve = resolve }) : null;
 
@@ -42,11 +42,11 @@ export class Projector {
     return promise;
   }
 
-  projectAsyncTo<T>(component: Vue, data: T, screen: string = "default", queue: boolean = false) {
+  projectAsyncTo<T>(component: Vue, data: T, screen: string = "defaultscreen", queue: boolean = false) {
     return this.projectTo(component, data, screen, queue, true)
   }
 
-  stopProjecting(screen: string = "default") {
+  stopProjecting(screen: string = "defaultscreen") {
     if (this.projecting.has(screen)) {
       (this.projecting.get(screen) || []).pop()
     }
