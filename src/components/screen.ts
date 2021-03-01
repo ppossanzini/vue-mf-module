@@ -14,7 +14,7 @@ export default class Screen extends Vue {
   model: IProjectableModel<any> | null = null;
 
   get isVisible() {
-    return this.currentView != null || (this.$el && this.$el.children && this.$el.children.length);
+    return this.currentView != null;
   }
 
   mounted() {
