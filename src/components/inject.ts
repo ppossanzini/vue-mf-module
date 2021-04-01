@@ -11,7 +11,7 @@ import { CommonRegistry } from "../helpers/CommonRegistry";
     names: { type: [], default: null },
     group: { type: String, default: null }
   },
-  template: `<component :is="c"  v-for="(c, idx) in Components" :key="idx" :id="id" :type="type" v-model="value" />`
+  template: `<div><component :is="c"  v-for="(c, idx) in Components" :key="idx" :id="id" :type="type" v-model="Value" /></div>`
 })
 export default class Inject extends Vue {
 
@@ -21,6 +21,9 @@ export default class Inject extends Vue {
   name!: string | null;
   names!: string[] | null;
   group?: string;
+
+  get Value() { return this.value }
+  set Value(v) { this.$emit("input", v); }
 
   get Components() {
 

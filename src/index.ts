@@ -8,6 +8,7 @@ import Screen from "./components/screen";
 import { VueConstructor } from "vue";
 import { Projector } from "./helpers/Projector";
 import directives, { ScreensManager } from "./directives/screen";
+import { validate as ValidateDirective } from "./directives/validate";
 
 export {
   MenuHelper,
@@ -16,6 +17,7 @@ export {
   CommonRegistry,
   MessageService,
   Inject, Screen,
+  ValidateDirective
 }
 
 
@@ -24,6 +26,7 @@ function install(Vue: VueConstructor<Vue>) {
   Vue.component("inject", Inject);
   Vue.directive("screen", directives.screenDirective);
   Vue.directive("projectTo", directives.projectToDirective);
+  Vue.directive("validate", ValidateDirective as any);
 }
 export default { install }
 
@@ -37,8 +40,8 @@ export interface IModuleInitializer {
 interface IModuleInitializerWrapper {
   init(menu: MenuHelper,
     store: IStore,
-    configuration: any,
-    options: {
+    configuration: any
+    , options: {
       registry: CommonRegistry,
       messageService: MessageService,
       projector: Projector,
@@ -70,12 +73,13 @@ export function ModuleInitializer(opts: IModuleInitializer) {
 
 export function InitModule(module: any, store: IStore, configuration: any | undefined) {
   var initobj = (module.default.default || module.default) as IModuleInitializerWrapper;
-  initobj.init(MenuHelper.Instance, store, configuration || {}, {
-    registry: CommonRegistry.Instance,
-    messageService: MessageService.Instance,
-    projector: Projector.Instance,
-    screens: ScreensManager.Instance
-  });
+  initobj.init(MenuHelper.Instance, store, configuration || {},
+    {
+      registry: CommonRegistry.Instance,
+      messageService: MessageService.Instance,
+      projector: Projector.Instance,
+      screens: ScreensManager.Instance
+    });
 
   return initobj as IModuleInitializer;
 }

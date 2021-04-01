@@ -20,7 +20,7 @@ export class Projector {
 
 
 
-  projectTo<T>(component: VueConstructor, data: T | null = null, screen: string = "defaultscreen", queue: boolean = false, async: boolean = false): Promise<T> | null {
+  projectTo<T>(component: VueConstructor, data: T | null = null, screen: string = "defaultscreen", queue: boolean = true, async: boolean = false): Promise<T> | null {
     var model = { data } as IProjectableModel<T>;
     let promise = async ? new Promise<T>((resolve, reject) => { model.reject = reject; model.resolve = resolve }) : null;
 
@@ -43,7 +43,7 @@ export class Projector {
     return promise;
   }
 
-  projectAsyncTo<T>(component: VueConstructor, data: T, screen: string = "defaultscreen", queue: boolean = false) {
+  projectAsyncTo<T>(component: VueConstructor, data: T, screen: string = "defaultscreen", queue: boolean = true) {
     return this.projectTo(component, data, screen, queue, true)
   }
 
