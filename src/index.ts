@@ -6,9 +6,10 @@ import { IStore } from "./interfaces/StoreInterfaces";
 import Inject from "./components/inject";
 import Screen from "./components/screen";
 import { VueConstructor } from "vue";
-import { Projector } from "./helpers/Projector";
+import { Projector, IProjectableModel, Projectable } from "./helpers/Projector";
 import directives, { ScreensManager } from "./directives/screen";
 import { validate as ValidateDirective } from "./directives/validate";
+
 
 export {
   MenuHelper,
@@ -17,7 +18,7 @@ export {
   CommonRegistry,
   MessageService,
   Inject, Screen,
-  ValidateDirective
+  ValidateDirective, Projectable, IProjectableModel
 }
 
 

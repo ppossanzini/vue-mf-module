@@ -6,7 +6,7 @@ import { IProjectableModel, Projector } from "../helpers/Projector";
   props: {
     name: { type: String, default: "defaultscreen" },
   },
-  template: `<div v-show="isVisible"><component v-if="currentView" v-bind:is="currentView" :value="model"></component></div>`
+  template: `<div v-show="isVisible"><component v-if="currentView" v-bind:is="currentView" :value="model" :key="model"></component></div>`
 })
 export default class Screen extends Vue {
   name!: string;
