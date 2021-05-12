@@ -10,9 +10,11 @@ import { CommonRegistry } from "../helpers/CommonRegistry";
     name: { type: String, default: null },
     names: { type: [], default: null },
     group: { type: String, default: null },
-    metadata: { type: Object, default: null }
+    metadata: { type: Object, default: null },
+    disabled: { type: Boolean, default: false },
+    readonly: { type: Boolean, default: false }
   },
-  template: `<div><component :is="c"  v-for="(c, idx) in Components" :key="idx" :id="id" :type="type" :metadata="metadata" v-model="Value" @click="click" @save="save" /></div>`
+  template: `<div><component :is="c"  v-for="(c, idx) in Components" :disabled="disabled" :readonly="readonly" :key="idx" :id="id" :type="type" :metadata="metadata" v-model="Value" @click="click" @save="save" /></div>`
 })
 export default class Inject extends Vue {
 
@@ -23,6 +25,8 @@ export default class Inject extends Vue {
   names!: string[] | null;
   group?: string;
   metadata?: { [id: string]: any };
+  disabled!: boolean;
+  readonly!: boolean;
 
   get Value() { return this.value }
   set Value(v) { this.$emit("input", v); }
