@@ -18,7 +18,8 @@ export {
   CommonRegistry,
   MessageService,
   Inject, Screen,
-  ValidateDirective, Projectable, IProjectableModel
+  ValidateDirective, Projectable, IProjectableModel,
+  Projector
 }
 
 

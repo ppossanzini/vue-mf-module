@@ -1,6 +1,6 @@
 {
   "name": "vue-mf-module",
-  "version": "0.3.1",
+  "version": "0.3.3",
   "description": "A vue extension to create microfrontend module",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
