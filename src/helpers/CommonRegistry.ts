@@ -3,7 +3,7 @@ import Vue from "vue";
 export class CommonRegistry {
 
   private registry = {}
-  private groupedregistry = new Map<string, Map<string, any>>();
+  private groupedregistry = {};
   private serviceregistry = new Map<string, any>();
   private groupedserviceregistry = new Map<string, Map<string, any>>();
 
@@ -13,21 +13,15 @@ export class CommonRegistry {
   static set Instance(v: CommonRegistry) { this.instance = v };
 
   provideComponent(component: any, name: string, group?: string) {
-    //@ts-ignore
-    if (group?.indexOf("-") >= 0 || name.indexOf("-")) throw "grour or name is invalid! name: " + name + (group ? "; group: " + group : "");
     Vue.set(this.registry, group ? `${group}-${name}` : name, component);
-    // this.registry.set(group ? `${group}-${name}` : name, component);
-    // if (group) {
-    //   if (!this.groupedregistry.has(group)) this.groupedregistry.set(group, new Map<string, any>());
-
-    //   let gg = this.groupedregistry.get(group);
-    //   if (gg) gg.set(name, component);
-    // }
+    if (group) {
+      if (!this.groupedregistry[group]) Vue.set(this.groupedregistry, group, {});
+      Vue.set(this.groupedregistry[group], name, component)
+    }
   }
 
   getComponent(name: string, group?: string): any | null {
-    //@ts-ignore
-    if (group?.indexOf("-") >= 0 || name.indexOf("-")) throw "grour or name is invalid! name: " + name + (group ? "; group: " + group : "");
+    //if ((group && group.indexOf("-") >= 0) || name.indexOf("-") >= 0) throw "grour or name is invalid! name: " + name + (group ? "; group: " + group : "");
     return this.registry[group ? `${group}-${name}` : name] || null;
   }
 
@@ -36,15 +30,15 @@ export class CommonRegistry {
   }
 
   getGroupComponents(group: string, ...name: string[]): (any)[] {
-    let g = this.groupedregistry.get(group);
+    let g = this.groupedregistry[group];
     if (g)
-      return Array.from(g.entries() || []).filter(i => (!name || name.length == 0) || name.indexOf(i[0]) >= 0).map(i => i[1]);
+      return Array.from(Object.entries(g) || []).filter(i => (!name || name.length == 0) || name.indexOf(i[0]) >= 0).map(i => i[1]);
     return []
   }
 
   getGroupComponentsKeys(group: string): (string)[] {
-    let g = this.groupedregistry.get(group);
-    if (g) return Array.from(g.keys());
+    let g = this.groupedregistry[group];
+    if (g) return Array.from(Object.keys(g));
     return []
   }
 
