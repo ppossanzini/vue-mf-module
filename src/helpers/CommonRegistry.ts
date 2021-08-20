@@ -1,7 +1,8 @@
+import Vue from "vue";
 
 export class CommonRegistry {
 
-  private registry = new Map<string, any>();
+  private registry = {}
   private groupedregistry = new Map<string, Map<string, any>>();
   private serviceregistry = new Map<string, any>();
   private groupedserviceregistry = new Map<string, Map<string, any>>();
@@ -12,21 +13,26 @@ export class CommonRegistry {
   static set Instance(v: CommonRegistry) { this.instance = v };
 
   provideComponent(component: any, name: string, group?: string) {
-    this.registry.set(group ? `${group}-${name}` : name, component);
-    if (group) {
-      if (!this.groupedregistry.has(group)) this.groupedregistry.set(group, new Map<string, any>());
+    //@ts-ignore
+    if (group?.indexOf("-") >= 0 || name.indexOf("-")) throw "grour or name is invalid! name: " + name + (group ? "; group: " + group : "");
+    Vue.set(this.registry, group ? `${group}-${name}` : name, component);
+    // this.registry.set(group ? `${group}-${name}` : name, component);
+    // if (group) {
+    //   if (!this.groupedregistry.has(group)) this.groupedregistry.set(group, new Map<string, any>());
 
-      let gg = this.groupedregistry.get(group);
-      if (gg) gg.set(name, component);
-    }
+    //   let gg = this.groupedregistry.get(group);
+    //   if (gg) gg.set(name, component);
+    // }
   }
 
   getComponent(name: string, group?: string): any | null {
-    return this.registry.get(group ? `${group}-${name}` : name) || null;
+    //@ts-ignore
+    if (group?.indexOf("-") >= 0 || name.indexOf("-")) throw "grour or name is invalid! name: " + name + (group ? "; group: " + group : "");
+    return this.registry[group ? `${group}-${name}` : name] || null;
   }
 
   getComponents(...name: string[]): (any)[] {
-    return Array.from(this.registry.entries()).filter(i => name.indexOf(i[0]) >= 0).map(i => i[1]);
+    return Array.from(Object.entries(this.registry)).filter(i => name.indexOf(i[0]) >= 0).map(i => i[1]);
   }
 
   getGroupComponents(group: string, ...name: string[]): (any)[] {
