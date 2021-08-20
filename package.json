@@ -15,16 +15,16 @@
     "vue-class-component": "7.2.6"
   },
   "bugs": {
-    "url": "https://github.com/ppossanzini/vue-mf-module/issues"
+    "url": "https://github.com/Agricolus/vue-mf-module/issues"
   },
-  "homepage": "https://github.com/ppossanzini/vue-mf-module",
+  "homepage": "https://github.com/Agricolus/vue-mf-module",
   "keywords": [
     "vue",
     "mf"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ppossanzini/vue-mf-module.git"
+    "url": "git+https://github.com/Agricolus/vue-mf-module.git"
   },
   "devDependencies": {
     "tiny-emitter": "2.1.0",
