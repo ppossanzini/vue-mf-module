@@ -1,8 +1,10 @@
-import Vue from "vue";
-export class CommonRegistry {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CommonRegistry = void 0;
+class CommonRegistry {
     constructor() {
-        this.registry = {};
-        this.groupedregistry = {};
+        this.registry = new Map();
+        this.groupedregistry = new Map();
         this.serviceregistry = new Map();
         this.groupedserviceregistry = new Map();
     }
@@ -10,30 +12,31 @@ export class CommonRegistry {
     static set Instance(v) { this.instance = v; }
     ;
     provideComponent(component, name, group) {
-        Vue.set(this.registry, group ? `${group}-${name}` : name, component);
+        this.registry.set(group ? `${group}-${name}` : name, component);
         if (group) {
-            if (!this.groupedregistry[group])
-                Vue.set(this.groupedregistry, group, {});
-            Vue.set(this.groupedregistry[group], name, component);
+            if (!this.groupedregistry.has(group))
+                this.groupedregistry.set(group, new Map());
+            let gg = this.groupedregistry.get(group);
+            if (gg)
+                gg.set(name, component);
         }
     }
     getComponent(name, group) {
-        //if ((group && group.indexOf("-") >= 0) || name.indexOf("-") >= 0) throw "grour or name is invalid! name: " + name + (group ? "; group: " + group : "");
-        return this.registry[group ? `${group}-${name}` : name] || null;
+        return this.registry.get(group ? `${group}-${name}` : name) || null;
     }
     getComponents(...name) {
-        return Array.from(Object.entries(this.registry)).filter(i => name.indexOf(i[0]) >= 0).map(i => i[1]);
+        return Array.from(this.registry.entries()).filter(i => name.indexOf(i[0]) >= 0).map(i => i[1]);
     }
     getGroupComponents(group, ...name) {
-        let g = this.groupedregistry[group];
+        let g = this.groupedregistry.get(group);
         if (g)
-            return Array.from(Object.entries(g) || []).filter(i => (!name || name.length == 0) || name.indexOf(i[0]) >= 0).map(i => i[1]);
+            return Array.from(g.entries() || []).filter(i => (!name || name.length == 0) || name.indexOf(i[0]) >= 0).map(i => i[1]);
         return [];
     }
     getGroupComponentsKeys(group) {
-        let g = this.groupedregistry[group];
+        let g = this.groupedregistry.get(group);
         if (g)
-            return Array.from(Object.keys(g));
+            return Array.from(g.keys());
         return [];
     }
     provideService(name, service, group) {
@@ -56,4 +59,5 @@ export class CommonRegistry {
         return [];
     }
 }
+exports.CommonRegistry = CommonRegistry;
 CommonRegistry.instance = new CommonRegistry();

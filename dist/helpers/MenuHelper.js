@@ -1,18 +1,21 @@
-import { TinyEmitter } from 'tiny-emitter';
-export var menuType;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MenuHelper = exports.MenuNotifications = exports.menuType = void 0;
+const tiny_emitter_1 = require("tiny-emitter");
+var menuType;
 (function (menuType) {
     menuType[menuType["drawer"] = 0] = "drawer";
     menuType[menuType["bottom"] = 1] = "bottom";
     menuType[menuType["header"] = 2] = "header";
-})(menuType || (menuType = {}));
-export const MenuNotifications = {
+})(menuType = exports.menuType || (exports.menuType = {}));
+exports.MenuNotifications = {
     menuDefinitionAdded: 'newmenuitem'
 };
-export class MenuHelper {
+class MenuHelper {
     constructor() {
         this.menuDefinitions = [];
         this.menuStructure = {};
-        this.notifications = new TinyEmitter();
+        this.notifications = new tiny_emitter_1.TinyEmitter();
     }
     get Notifications() { return this.notifications; }
     static get Instance() { return MenuHelper.instance; }
@@ -29,7 +32,7 @@ export class MenuHelper {
             if (element.parent)
                 this.menuStructure[element.section][element.parent].push(menuDefinition.name);
         }
-        this.notifications.emit(MenuNotifications.menuDefinitionAdded, menuDefinition);
+        this.notifications.emit(exports.MenuNotifications.menuDefinitionAdded, menuDefinition);
     }
     getMenuItem(name) {
         return this.menuDefinitions.find(i => i.name == name);
@@ -70,4 +73,5 @@ export class MenuHelper {
         });
     }
 }
+exports.MenuHelper = MenuHelper;
 MenuHelper.instance = new MenuHelper();
