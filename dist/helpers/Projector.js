@@ -1,4 +1,7 @@
-export class Projector {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Projector = void 0;
+class Projector {
     constructor() {
         this.screens = new Map();
         this.projecting = new Map();
@@ -53,4 +56,5 @@ export class Projector {
         return false;
     }
 }
+exports.Projector = Projector;
 Projector.instance = new Projector();

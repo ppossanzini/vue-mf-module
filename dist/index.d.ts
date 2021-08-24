@@ -16,7 +16,9 @@ declare const _default: {
 };
 export default _default;
 export interface IModuleInitializer {
-    init(menu: MenuHelper, store: IStore, configuration: any): void;
+    init(menu: MenuHelper, store: IStore, configuration: any): Promise<void>;
+    config?(menu: MenuHelper, store: IStore, configuration: any): Promise<void>;
+    run?(menu: MenuHelper, store: IStore, configuration: any): Promise<void>;
     routes: IRouteConfig[];
 }
 interface IModuleInitializerWrapper {
@@ -25,8 +27,13 @@ interface IModuleInitializerWrapper {
         messageService: MessageService;
         projector: Projector;
         screens: ScreensManager;
-    }): void;
+    }): Promise<void>;
+    config(menu: MenuHelper, store: IStore): Promise<void>;
+    run(menu: MenuHelper, store: IStore): Promise<void>;
     routes: IRouteConfig[];
 }
 export declare function ModuleInitializer(opts: IModuleInitializer): IModuleInitializerWrapper;
-export declare function InitModule(module: any, store: IStore, configuration: any | undefined): IModuleInitializer;
+export declare function InitModule(module: any, store: IStore, configuration: any | undefined): Promise<void>;
+export declare function ConfigModule(module: any, store: IStore): Promise<void>;
+export declare function RunModule(module: any, store: IStore): Promise<void>;
+export declare function ModuleRoutes(module: any): IRouteConfig[];
