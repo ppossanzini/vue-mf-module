@@ -92,24 +92,25 @@ export function ModuleInitializer(opts: IModuleInitializer) {
   } as IModuleInitializerWrapper
 }
 
-export function InitModule(module: any, store: IStore, configuration: any | undefined): Promise<void> {
+export async function InitModule(module: any, store: IStore, configuration: any | undefined): Promise<IModuleInitializerWrapper> {
   var initobj = (module.default.default || module.default) as IModuleInitializerWrapper;
-  return initobj.init(MenuHelper.Instance, store, configuration || {},
+  initobj.init(MenuHelper.Instance, store, configuration || {},
     {
       registry: CommonRegistry.Instance,
       messageService: MessageService.Instance,
       projector: Projector.Instance,
       screens: ScreensManager.Instance
     });
+  return initobj;
 }
 
-export function ConfigModule(module: any, store: IStore): Promise<void> {
+export async function ConfigModule(module: any, store: IStore): Promise<void> {
   var initobj = (module.default.default || module.default) as IModuleInitializerWrapper;
   return initobj.config(MenuHelper.Instance, store);
 }
 
 
-export function RunModule(module: any, store: IStore): Promise<void> {
+export async function RunModule(module: any, store: IStore): Promise<void> {
   var initobj = (module.default.default || module.default) as IModuleInitializerWrapper;
   return initobj.run(MenuHelper.Instance, store);
 }
