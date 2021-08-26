@@ -33,7 +33,7 @@ interface IModuleInitializerWrapper {
     routes: IRouteConfig[];
 }
 export declare function ModuleInitializer(opts: IModuleInitializer): IModuleInitializerWrapper;
-export declare function InitModule(module: any, store: IStore, configuration: any | undefined): Promise<void>;
+export declare function InitModule(module: any, store: IStore, configuration: any | undefined): Promise<IModuleInitializerWrapper>;
 export declare function ConfigModule(module: any, store: IStore): Promise<void>;
 export declare function RunModule(module: any, store: IStore): Promise<void>;
 export declare function ModuleRoutes(module: any): IRouteConfig[];

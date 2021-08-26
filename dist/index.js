@@ -71,22 +71,23 @@ function ModuleInitializer(opts) {
     };
 }
 exports.ModuleInitializer = ModuleInitializer;
-function InitModule(module, store, configuration) {
+async function InitModule(module, store, configuration) {
     var initobj = (module.default.default || module.default);
-    return initobj.init(MenuHelper_1.MenuHelper.Instance, store, configuration || {}, {
+    initobj.init(MenuHelper_1.MenuHelper.Instance, store, configuration || {}, {
         registry: CommonRegistry_1.CommonRegistry.Instance,
         messageService: MessageService_1.MessageService.Instance,
         projector: Projector_1.Projector.Instance,
         screens: screen_2.ScreensManager.Instance
     });
+    return initobj;
 }
 exports.InitModule = InitModule;
-function ConfigModule(module, store) {
+async function ConfigModule(module, store) {
     var initobj = (module.default.default || module.default);
     return initobj.config(MenuHelper_1.MenuHelper.Instance, store);
 }
 exports.ConfigModule = ConfigModule;
-function RunModule(module, store) {
+async function RunModule(module, store) {
     var initobj = (module.default.default || module.default);
     return initobj.run(MenuHelper_1.MenuHelper.Instance, store);
 }
