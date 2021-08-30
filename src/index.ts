@@ -92,7 +92,7 @@ export function ModuleInitializer(opts: IModuleInitializer) {
   } as IModuleInitializerWrapper
 }
 
-export async function InitModule(module: any, store: IStore, configuration: any | undefined): Promise<IModuleInitializerWrapper> {
+export async function InitModule(module: any, store: IStore, configuration: any | undefined): Promise<IModuleInitializer> {
   var initobj = (module.default.default || module.default) as IModuleInitializerWrapper;
   initobj.init(MenuHelper.Instance, store, configuration || {},
     {
@@ -101,7 +101,7 @@ export async function InitModule(module: any, store: IStore, configuration: any 
       projector: Projector.Instance,
       screens: ScreensManager.Instance
     });
-  return initobj;
+  return initobj as unknown as IModuleInitializer;
 }
 
 export async function ConfigModule(module: any, store: IStore): Promise<void> {
