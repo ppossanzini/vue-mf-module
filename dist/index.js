@@ -49,7 +49,7 @@ exports.default = { install };
 function ModuleInitializer(opts) {
     let moduleConfig = {};
     return {
-        async init(menu, store, configuration, options) {
+        init(menu, store, configuration, options) {
             if (options.registry)
                 CommonRegistry_1.CommonRegistry.Instance = options.registry;
             if (options.messageService)
@@ -61,39 +61,40 @@ function ModuleInitializer(opts) {
             moduleConfig = configuration;
             return opts.init(menu, store, configuration);
         },
-        async config(menu, store) {
+        config(menu, store) {
             return opts.config ? opts.config(menu, store, moduleConfig) : null;
         },
-        async run(menu, store) {
+        run(menu, store) {
             return opts.run ? opts.run(menu, store, moduleConfig) : null;
         },
         routes: opts.routes
     };
 }
 exports.ModuleInitializer = ModuleInitializer;
-async function InitModule(module, store, configuration) {
-    var initobj = (module.default.default || module.default);
-    initobj.init(MenuHelper_1.MenuHelper.Instance, store, configuration || {}, {
+function InitModule(module, store, configuration) {
+    const initobj = (module.default.default || module.default);
+    return initobj.init(MenuHelper_1.MenuHelper.Instance, store, configuration || {}, {
         registry: CommonRegistry_1.CommonRegistry.Instance,
         messageService: MessageService_1.MessageService.Instance,
         projector: Projector_1.Projector.Instance,
         screens: screen_2.ScreensManager.Instance
+    }).then(() => {
+        return initobj;
     });
-    return initobj;
 }
 exports.InitModule = InitModule;
-async function ConfigModule(module, store) {
-    var initobj = (module.default.default || module.default);
+function ConfigModule(module, store) {
+    const initobj = (module.default.default || module.default);
     return initobj.config(MenuHelper_1.MenuHelper.Instance, store);
 }
 exports.ConfigModule = ConfigModule;
-async function RunModule(module, store) {
-    var initobj = (module.default.default || module.default);
+function RunModule(module, store) {
+    const initobj = (module.default.default || module.default);
     return initobj.run(MenuHelper_1.MenuHelper.Instance, store);
 }
 exports.RunModule = RunModule;
 function ModuleRoutes(module) {
-    var initobj = (module.default.default || module.default);
+    const initobj = (module.default.default || module.default);
     return initobj.routes;
 }
 exports.ModuleRoutes = ModuleRoutes;

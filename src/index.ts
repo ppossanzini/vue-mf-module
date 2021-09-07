@@ -67,7 +67,7 @@ interface IModuleInitializerWrapper {
 export function ModuleInitializer(opts: IModuleInitializer) {
   let moduleConfig = {};
   return {
-    async init(menu: MenuHelper, store: IStore, configuration: any,
+    init(menu: MenuHelper, store: IStore, configuration: any,
       options: {
         registry: CommonRegistry,
         messageService: MessageService,
@@ -82,41 +82,42 @@ export function ModuleInitializer(opts: IModuleInitializer) {
       moduleConfig = configuration;
       return opts.init(menu, store, configuration);
     },
-    async config(menu: MenuHelper, store: IStore) {
+    config(menu: MenuHelper, store: IStore) {
       return opts.config ? opts.config(menu, store, moduleConfig) : null;
     },
-    async run(menu: MenuHelper, store: IStore) {
+    run(menu: MenuHelper, store: IStore) {
       return opts.run ? opts.run(menu, store, moduleConfig) : null;
     },
     routes: opts.routes
   } as IModuleInitializerWrapper
 }
 
-export async function InitModule(module: any, store: IStore, configuration: any | undefined): Promise<IModuleInitializer> {
-  var initobj = (module.default.default || module.default) as IModuleInitializerWrapper;
-  initobj.init(MenuHelper.Instance, store, configuration || {},
+export function InitModule(module: any, store: IStore, configuration: any | undefined): Promise<IModuleInitializer> {
+  const initobj = (module.default.default || module.default) as IModuleInitializerWrapper;
+  return initobj.init(MenuHelper.Instance, store, configuration || {},
     {
       registry: CommonRegistry.Instance,
       messageService: MessageService.Instance,
       projector: Projector.Instance,
       screens: ScreensManager.Instance
+    }).then(() => {
+      return initobj as unknown as IModuleInitializer;
     });
-  return initobj as unknown as IModuleInitializer;
 }
 
-export async function ConfigModule(module: any, store: IStore): Promise<void> {
-  var initobj = (module.default.default || module.default) as IModuleInitializerWrapper;
+export function ConfigModule(module: any, store: IStore): Promise<void> {
+  const initobj = (module.default.default || module.default) as IModuleInitializerWrapper;
   return initobj.config(MenuHelper.Instance, store);
 }
 
 
-export async function RunModule(module: any, store: IStore): Promise<void> {
-  var initobj = (module.default.default || module.default) as IModuleInitializerWrapper;
+export function RunModule(module: any, store: IStore): Promise<void> {
+  const initobj = (module.default.default || module.default) as IModuleInitializerWrapper;
   return initobj.run(MenuHelper.Instance, store);
 }
 
 export function ModuleRoutes(module: any): IRouteConfig[] {
-  var initobj = (module.default.default || module.default) as IModuleInitializerWrapper;
+  const initobj = (module.default.default || module.default) as IModuleInitializerWrapper;
   return initobj.routes;
 }
 
