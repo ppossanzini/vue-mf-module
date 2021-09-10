@@ -1,13 +1,13 @@
 {
   "name": "vue-mf-module",
-  "version": "0.3.1",
+  "version": "0.4.3",
   "description": "A vue extension to create microfrontend module",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "compile": "tsc"
   },
-  "author": "Paolo Possanzini <ppossanzini@gmail.com>",
+  "author": "e.sodacci <e.sodacci@agricolus.com>",
   "license": "MIT",
   "dependencies": {
     "tiny-emitter": "2.1.0",
@@ -15,16 +15,16 @@
     "vue-class-component": "7.2.6"
   },
   "bugs": {
-    "url": "https://github.com/ppossanzini/vue-mf-module/issues"
+    "url": "https://github.com/Agricolus/vue-mf-module/issues"
   },
-  "homepage": "https://github.com/ppossanzini/vue-mf-module",
+  "homepage": "https://github.com/Agricolus/vue-mf-module",
   "keywords": [
     "vue",
     "mf"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ppossanzini/vue-mf-module.git"
+    "url": "git+https://github.com/Agricolus/vue-mf-module.git"
   },
   "devDependencies": {
     "tiny-emitter": "2.1.0",
