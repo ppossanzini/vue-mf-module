@@ -1,16 +1,19 @@
-const projectToDirective = {
+import type { Directive } from "vue";
 
-  inserted: (el: Element, bind) => {
-    ScreensManager.Instance.injectTo(el, bind.arg);
+const projectToDirective: Directive = {
+
+  beforeMount: (el: Element, bind) => {
+    if (bind.arg)
+      ScreensManager.Instance.injectTo(el, bind.arg);
   },
-  unbind: (el: Element, bind) => {
-    ScreensManager.Instance.removeFrom(el, bind.arg)
+  unmounted: (el: Element, bind) => {
+    if (bind.arg)
+      ScreensManager.Instance.removeFrom(el, bind.arg)
   }
 }
 
-
-const screenDirective = {
-  bind: (el, binding) => {
+const screenDirective: Directive = {
+  beforeMount: (el, binding) => {
     if (!el) return;
     ScreensManager.Instance.setScreen(el, binding.arg);
   }
@@ -25,7 +28,7 @@ export class ScreensManager {
   static get Instance(): ScreensManager { return ScreensManager.instance }
   static set Instance(v: ScreensManager) { this.instance = v; }
   private screens = new Map<string, Element>();
-  
+
 
   injectTo(domElement: Element, screen: string) {
     if (!domElement || !screen) return;
@@ -40,7 +43,7 @@ export class ScreensManager {
     try { if (element) element.removeChild(domElement) } catch { }
   }
 
-  setScreen(screen, name: string = "defaultscreen") {
+  setScreen(screen: Element, name: string = "defaultscreen") {
     this.screens.set(name, screen);
   }
 }
