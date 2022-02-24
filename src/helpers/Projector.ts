@@ -1,6 +1,6 @@
 
-import { VueConstructor } from "vue/types/umd";
-import Screen from "../components/screen";
+import type { Component } from "vue";
+import type Screen from "../components/screen.vue";
 
 export interface IProjectableModel<T> {
   data: T; resolve: (item: T) => void; reject: () => void;
@@ -12,15 +12,15 @@ export class Projector {
   static set Instance(v: Projector) { this.instance = v; }
 
   private screens = new Map<string, Screen>();
-  private projecting = new Map<string, { component: VueConstructor, model: IProjectableModel<any>, promise: Promise<any> | null, queue: boolean }[]>();
+  private projecting = new Map<string, { component: Component, model: IProjectableModel<any>, promise: Promise<any> | null, queue: boolean }[]>();
 
-  setScreen(screen, name: string = "defaultscreen") {
+  setScreen(screen: Screen, name: string = "defaultscreen") {
     this.screens.set(name, screen);
   }
 
 
 
-  projectTo<T>(component: VueConstructor, data: T | null = null, screen: string = "defaultscreen", queue: boolean = true, async: boolean = false): Promise<T> | null {
+  projectTo<T>(component: Component, data: T | null = null, screen: string = "defaultscreen", queue: boolean = true, async: boolean = false): Promise<T> | null {
     var model = { data } as IProjectableModel<T>;
     let promise = async ? new Promise<T>((resolve, reject) => { model.reject = reject; model.resolve = resolve }) : null;
 
@@ -43,7 +43,7 @@ export class Projector {
     return promise;
   }
 
-  projectAsyncTo<T>(component: VueConstructor, data: T, screen: string = "defaultscreen", queue: boolean = true) {
+  projectAsyncTo<T>(component: Component, data: T, screen: string = "defaultscreen", queue: boolean = true) {
     return this.projectTo(component, data, screen, queue, true)
   }
 
