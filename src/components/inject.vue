@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Options, prop, Vue } from "vue-class-component";
+import { prop, Vue } from "vue-class-component";
 import { CommonRegistry } from "../helpers/CommonRegistry";
 
 const emit = defineEmits({
