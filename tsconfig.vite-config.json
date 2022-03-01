@@ -2,8 +2,9 @@
   "extends": "@vue/tsconfig/tsconfig.node.json",
   "include": ["vite.config.*"],
   "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
     "composite": true,
-    "types": ["node", "vitest"],
-    "declaration": true
+    "types": ["node", "vitest"]
   }
 }

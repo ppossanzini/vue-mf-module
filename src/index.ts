@@ -1,4 +1,4 @@
-import { type IMenuDefinition, MenuHelper, menuType } from "./helpers/MenuHelper";
+import { type IMenuDefinition, MenuHelper, menuType, MenuNotifications } from "./helpers/MenuHelper";
 import { CommonRegistry } from "./helpers/CommonRegistry";
 import { MessageService } from "./helpers/MessageService";
 import type { IRouteConfig } from "./interfaces/RouterInterfaces";
@@ -18,6 +18,7 @@ export {
   CommonRegistry,
   MessageService,
   Inject, Screen,
+  MenuNotifications,
   ValidateDirective, Projectable, IProjectableModel
 }
 
