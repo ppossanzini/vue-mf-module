@@ -1,14 +1,14 @@
-import { IMenuDefinition, MenuHelper, menuType } from "./helpers/MenuHelper";
+import { type IMenuDefinition, MenuHelper, menuType, MenuNotifications } from "./helpers/MenuHelper";
 import { CommonRegistry } from "./helpers/CommonRegistry";
 import { MessageService } from "./helpers/MessageService";
-import { IRouteConfig } from "./interfaces/RouterInterfaces";
-import { IStore } from "./interfaces/StoreInterfaces";
-import Inject from "./components/inject";
-import Screen from "./components/screen";
-import { VueConstructor } from "vue";
-import { Projector, IProjectableModel, Projectable } from "./helpers/Projector";
+import type { IRouteConfig } from "./interfaces/RouterInterfaces";
+import type { IStore } from "./interfaces/StoreInterfaces";
+import Inject from "./components/inject.vue";
+import Screen from "./components/screen.vue";
+import { Projector, type IProjectableModel, type Projectable } from "./helpers/Projector";
 import directives, { ScreensManager } from "./directives/screen";
 import { validate as ValidateDirective } from "./directives/validate";
+import type { App } from 'vue';
 
 
 export {
@@ -18,17 +18,18 @@ export {
   CommonRegistry,
   MessageService,
   Inject, Screen,
-  ValidateDirective, Projectable, IProjectableModel,
-  Projector
+  MenuNotifications,
+  ValidateDirective, Projectable, IProjectableModel
+
 }
 
 
-function install(Vue: VueConstructor<Vue>) {
-  Vue.component("screen", Screen);
-  Vue.component("inject", Inject);
-  Vue.directive("screen", directives.screenDirective);
-  Vue.directive("projectTo", directives.projectToDirective);
-  Vue.directive("validate", ValidateDirective as any);
+function install(app: App) {
+  app.component("screen", Screen);
+  app.component("inject", Inject);
+  app.directive("screen", directives.screenDirective);
+  app.directive("projectTo", directives.projectToDirective);
+  app.directive("validate", ValidateDirective as any);
 }
 export default { install }
 
