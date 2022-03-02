@@ -18,6 +18,7 @@ export {
   CommonRegistry,
   MessageService,
   Inject, Screen,
+  Projector,
   MenuNotifications,
   ValidateDirective, Projectable, IProjectableModel
 }
