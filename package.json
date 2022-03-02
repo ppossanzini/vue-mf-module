@@ -1,6 +1,6 @@
 {
   "name": "vue-mf-module",
-  "version": "0.3.2",
+  "version": "3.0.0",
   "description": "A vue extension to create microfrontend module",
   "module": "dist/vue-mf-module.umd.js",
   "scripts": {

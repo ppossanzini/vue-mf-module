@@ -21,6 +21,7 @@ export {
   Projector,
   MenuNotifications,
   ValidateDirective, Projectable, IProjectableModel
+
 }
 
 
