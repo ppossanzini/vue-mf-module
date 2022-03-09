@@ -5,7 +5,7 @@ import {
   MenuNotifications,
 } from "./helpers/MenuHelper";
 import { CommonRegistry } from "./helpers/CommonRegistry";
-import MessageService from "./helpers/MessageService";
+import { MessageService } from "./helpers/MessageService";
 import type { IRouteConfig } from "./interfaces/RouterInterfaces";
 // import type { IStore } from "./interfaces/StoreInterfaces";
 
@@ -39,11 +39,11 @@ export {
 };
 
 function install(app: App) {
-  // app.component("screen", Screen);
-  // app.component("inject", Inject);
-  // app.directive("screen", directives.screenDirective);
-  // app.directive("projectTo", directives.projectToDirective);
-  // app.directive("validate", ValidateDirective as any);
+  app.component("screen", Screen);
+  app.component("inject", Inject);
+  app.directive("screen", directives.screenDirective);
+  app.directive("projectTo", directives.projectToDirective);
+  app.directive("validate", ValidateDirective as any);
 }
 export default { install };
 

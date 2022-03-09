@@ -1,4 +1,4 @@
-import MessageService from "@/helpers/MessageService";
+import { MessageService } from "@/helpers/MessageService";
 
 export function commonService() {
 
