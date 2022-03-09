@@ -5,7 +5,7 @@ import {
   MenuNotifications,
 } from "./helpers/MenuHelper";
 import { CommonRegistry } from "./helpers/CommonRegistry";
-import { MessageService } from "./helpers/MessageService";
+import MessageService from "./helpers/MessageService";
 import type { IRouteConfig } from "./interfaces/RouterInterfaces";
 // import type { IStore } from "./interfaces/StoreInterfaces";
 
