@@ -1,7 +1,6 @@
 import { TinyEmitter } from "tiny-emitter";
 
-export class MessageService {
-
+export default class MessageService {
   private static instance = new MessageService();
   static get Instance() { return MessageService.instance }
   static set Instance(v: MessageService) { this.instance = v; }

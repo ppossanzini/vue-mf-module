@@ -1,6 +1,6 @@
 interface _RouteConfigBase {
   path: string
-  name?: string
+  name?: unknown
   children?: IRouteConfig[]
   redirect?: any
   alias?: string | string[]
