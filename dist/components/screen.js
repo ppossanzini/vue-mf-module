@@ -13,11 +13,9 @@ const vue_1 = __importDefault(require("vue"));
 const vue_class_component_1 = __importDefault(require("vue-class-component"));
 const Projector_1 = require("../helpers/Projector");
 let Screen = class Screen extends vue_1.default {
-    constructor() {
-        super(...arguments);
-        this.currentView = null;
-        this.model = null;
-    }
+    name;
+    currentView = null;
+    model = null;
     get isVisible() {
         return this.currentView != null;
     }
@@ -26,7 +24,7 @@ let Screen = class Screen extends vue_1.default {
     }
 };
 Screen = __decorate([
-    vue_class_component_1.default({
+    (0, vue_class_component_1.default)({
         props: {
             name: { type: String, default: "defaultscreen" },
         },

@@ -13,6 +13,15 @@ const vue_1 = __importDefault(require("vue"));
 const vue_class_component_1 = __importDefault(require("vue-class-component"));
 const CommonRegistry_1 = require("../helpers/CommonRegistry");
 let Inject = class Inject extends vue_1.default {
+    id;
+    type;
+    value;
+    name;
+    names;
+    group;
+    metadata;
+    disabled;
+    readonly;
     get Value() { return this.value; }
     set Value(v) { this.$emit("input", v); }
     get Components() {
@@ -26,7 +35,7 @@ let Inject = class Inject extends vue_1.default {
     save(...args) { this.$emit('save', ...args); }
 };
 Inject = __decorate([
-    vue_class_component_1.default({
+    (0, vue_class_component_1.default)({
         props: {
             id: { default: null },
             type: { default: null, type: String },
