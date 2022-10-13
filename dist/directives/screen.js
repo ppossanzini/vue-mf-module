@@ -20,11 +20,10 @@ exports.default = {
     projectToDirective, screenDirective
 };
 class ScreensManager {
-    constructor() {
-        this.screens = new Map();
-    }
+    static instance = new ScreensManager();
     static get Instance() { return ScreensManager.instance; }
     static set Instance(v) { this.instance = v; }
+    screens = new Map();
     injectTo(domElement, screen) {
         if (!domElement || !screen)
             return;
@@ -51,4 +50,3 @@ class ScreensManager {
     }
 }
 exports.ScreensManager = ScreensManager;
-ScreensManager.instance = new ScreensManager();

@@ -120,4 +120,3 @@ export function ModuleRoutes(module: any): IRouteConfig[] {
   const initobj = (module.default.default || module.default) as IModuleInitializerWrapper;
   return initobj.routes;
 }
-

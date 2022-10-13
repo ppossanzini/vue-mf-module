@@ -2,12 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Projector = void 0;
 class Projector {
-    constructor() {
-        this.screens = new Map();
-        this.projecting = new Map();
-    }
+    static instance = new Projector();
     static get Instance() { return Projector.instance; }
     static set Instance(v) { this.instance = v; }
+    screens = new Map();
+    projecting = new Map();
     setScreen(screen, name = "defaultscreen") {
         this.screens.set(name, screen);
     }
@@ -57,4 +56,3 @@ class Projector {
     }
 }
 exports.Projector = Projector;
-Projector.instance = new Projector();

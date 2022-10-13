@@ -12,11 +12,10 @@ exports.MenuNotifications = {
     menuDefinitionAdded: 'newmenuitem'
 };
 class MenuHelper {
-    constructor() {
-        this.menuDefinitions = [];
-        this.menuStructure = {};
-        this.notifications = new tiny_emitter_1.TinyEmitter();
-    }
+    menuDefinitions = [];
+    menuStructure = {};
+    notifications = new tiny_emitter_1.TinyEmitter();
+    static instance = new MenuHelper();
     get Notifications() { return this.notifications; }
     static get Instance() { return MenuHelper.instance; }
     addMenuDefinition(menuDefinition, ...positions) {
@@ -74,4 +73,3 @@ class MenuHelper {
     }
 }
 exports.MenuHelper = MenuHelper;
-MenuHelper.instance = new MenuHelper();
