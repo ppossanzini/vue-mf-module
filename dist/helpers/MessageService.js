@@ -1,12 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.MessageService = void 0;
-const tiny_emitter_1 = require("tiny-emitter");
-class MessageService {
-    static instance = new MessageService();
+import { TinyEmitter } from "tiny-emitter";
+export class MessageService {
+    constructor() {
+        this.notifier = new TinyEmitter();
+    }
     static get Instance() { return MessageService.instance; }
     static set Instance(v) { this.instance = v; }
-    notifier = new tiny_emitter_1.TinyEmitter();
     send(message, ...args) {
         this.notifier.emit(message, ...args);
     }
@@ -40,4 +38,4 @@ class MessageService {
         });
     }
 }
-exports.MessageService = MessageService;
+MessageService.instance = new MessageService();

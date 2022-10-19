@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.validate = void 0;
 function checkInputValidation(a, callout) {
     if (a.target.validity) {
         let el = a.target;
@@ -21,7 +18,7 @@ function checkInputValidation(a, callout) {
         }
     }
 }
-exports.validate = {
+export const validate = {
     inserted: (el, bind) => {
         if (!el || !el.willValidate)
             return;

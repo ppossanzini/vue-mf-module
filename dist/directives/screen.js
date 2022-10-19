@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ScreensManager = void 0;
 const projectToDirective = {
     inserted: (el, bind) => {
         ScreensManager.Instance.injectTo(el, bind.arg);
@@ -16,14 +13,15 @@ const screenDirective = {
         ScreensManager.Instance.setScreen(el, binding.arg);
     }
 };
-exports.default = {
+export default {
     projectToDirective, screenDirective
 };
-class ScreensManager {
-    static instance = new ScreensManager();
+export class ScreensManager {
+    constructor() {
+        this.screens = new Map();
+    }
     static get Instance() { return ScreensManager.instance; }
     static set Instance(v) { this.instance = v; }
-    screens = new Map();
     injectTo(domElement, screen) {
         if (!domElement || !screen)
             return;
@@ -31,7 +29,7 @@ class ScreensManager {
         try {
             domElement.parentElement && domElement.removeChild(domElement);
         }
-        catch { }
+        catch (_a) { }
         if (element)
             element.append(domElement);
     }
@@ -43,10 +41,10 @@ class ScreensManager {
             if (element)
                 element.removeChild(domElement);
         }
-        catch { }
+        catch (_a) { }
     }
     setScreen(screen, name = "defaultscreen") {
         this.screens.set(name, screen);
     }
 }
-exports.ScreensManager = ScreensManager;
+ScreensManager.instance = new ScreensManager();
