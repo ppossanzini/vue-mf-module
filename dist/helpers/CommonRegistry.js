@@ -1,12 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.CommonRegistry = void 0;
-class CommonRegistry {
-    registry = new Map();
-    groupedregistry = new Map();
-    serviceregistry = new Map();
-    groupedserviceregistry = new Map();
-    static instance = new CommonRegistry();
+export class CommonRegistry {
+    constructor() {
+        this.registry = new Map();
+        this.groupedregistry = new Map();
+        this.serviceregistry = new Map();
+        this.groupedserviceregistry = new Map();
+    }
     static get Instance() { return this.instance; }
     static set Instance(v) { this.instance = v; }
     ;
@@ -58,4 +56,4 @@ class CommonRegistry {
         return [];
     }
 }
-exports.CommonRegistry = CommonRegistry;
+CommonRegistry.instance = new CommonRegistry();

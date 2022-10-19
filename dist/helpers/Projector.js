@@ -1,12 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Projector = void 0;
-class Projector {
-    static instance = new Projector();
+export class Projector {
+    constructor() {
+        this.screens = new Map();
+        this.projecting = new Map();
+    }
     static get Instance() { return Projector.instance; }
     static set Instance(v) { this.instance = v; }
-    screens = new Map();
-    projecting = new Map();
     setScreen(screen, name = "defaultscreen") {
         this.screens.set(name, screen);
     }
@@ -55,4 +53,4 @@ class Projector {
         return false;
     }
 }
-exports.Projector = Projector;
+Projector.instance = new Projector();
