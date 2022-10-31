@@ -9,6 +9,7 @@ export interface IMenuDefinition {
   featureflags?: string[],
   orderIndex?: number,
   class?: string,
+  meta?: any,
   hidden: () => boolean
 }
 

@@ -61,7 +61,7 @@ export class Projector {
         let s = this.projecting.get(screen);
         if (s && s.length) {
           let m = s.pop();
-          if (m) this.projectTo(m.component, m.model, screen, m.queue, !!m.promise);
+          if (m) this.projectTo(m.component, m.model.data, screen, m.queue, !!m.promise);
         }
       }
 
