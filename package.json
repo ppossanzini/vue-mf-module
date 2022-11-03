@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "tiny-emitter": "2.1.0",
-    "vue": "^2.7.12",
+    "vue": "2.6.12",
     "vue-class-component": "7.2.6"
   },
   "bugs": {
@@ -29,7 +29,7 @@
   "devDependencies": {
     "tiny-emitter": "2.1.0",
     "typescript": "^4.8.4",
-    "vue": "2.7.12",
+    "vue": "2.6.12",
     "vue-class-component": "7.2.6"
   },
   "peerDependencies": {},
