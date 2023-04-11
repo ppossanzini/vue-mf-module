@@ -15,9 +15,10 @@ export interface IMenuDefinition {
 
 
 export enum menuType {
-  drawer,       // Drawer Menu
-  bottom,       // Bottom Menu
-  header
+  drawer = 0,
+  settings = 1,
+  header = 2, 
+  footer = 3
 }
 
 export const MenuNotifications = {
