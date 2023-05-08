@@ -8,6 +8,7 @@ export interface IMenuDefinition {
   routeParams?: object,
   featureflags?: string[],
   orderIndex?: number,
+  parents?: string[],
   class?: string,
   meta?: any,
   hidden: () => boolean
@@ -17,7 +18,7 @@ export interface IMenuDefinition {
 export enum menuType {
   drawer = 0,
   settings = 1,
-  header = 2, 
+  header = 2,
   footer = 3
 }
 
@@ -43,17 +44,44 @@ export class MenuHelper {
     else
       menuDefinition = found;
 
+    menuDefinition.parents = [];
+
     for (const element of positions) {
 
       this.menuStructure[element.section] = this.menuStructure[element.section] || {};
       this.menuStructure[element.section][element.parent || menuDefinition.name] = this.menuStructure[element.section][element.parent || menuDefinition.name] || [];
 
-      if (element.parent)
+      if (element.parent) {
         this.menuStructure[element.section][element.parent].push(menuDefinition.name);
+        menuDefinition.parents.push(element.parent);
+      }
+
     }
 
     this.notifications.emit(MenuNotifications.menuDefinitionAdded, menuDefinition);
   }
+
+  public moveMenu(name: string, parent: string, section: menuType) {
+
+    let result = this.menuDefinitions.find(i => i.name == name);
+
+    if (result) {
+      // remove menu from existing positions:
+      for (const p of result?.parents ?? []) {
+        let currentparent = this.menuStructure[section][p];
+        if (currentparent) {
+          let r = currentparent.indexOf(name);
+          if (r >= 0) currentparent.splice(r, 1);
+        }
+      }
+
+      this.menuStructure[section][parent || name] = this.menuStructure[section][parent || name] || [];
+      this.menuStructure[section][parent].push(name)
+    }
+
+    return result;
+  }
+
 
   public getMenuItem(name: string): IMenuDefinition | undefined {
     return this.menuDefinitions.find(i => i.name == name);
@@ -75,11 +103,7 @@ export class MenuHelper {
 
         children: element.map(i => this.menuDefinitions.find(m => m.name == i && (!m.hidden || !m.hidden())))
           .filter(i => !!i)
-          .sort((a, b) => {
-            if (a && b && a.orderIndex && b.orderIndex && a.orderIndex > b.orderIndex) return 1;
-            if (a && b && a.orderIndex && b.orderIndex && a.orderIndex < b.orderIndex) return -1;
-            return 0
-          })
+          .sort((a, b) => (a?.orderIndex ?? 0) - (b?.orderIndex ?? 0))
       };
 
       if (!!rr.item) {
@@ -89,11 +113,7 @@ export class MenuHelper {
       }
     }
     return result.filter(i => !!i.item)
-      .sort((a, b) => {
-        if (a && b && a.item && b.item && a.item.orderIndex && b.item.orderIndex && a.item.orderIndex > b.item.orderIndex) return 1;
-        if (a && b && a.item && b.item && a.item.orderIndex && b.item.orderIndex && a.item.orderIndex < b.item.orderIndex) return -1;
-        return 0
-      });
+      .sort((a, b) => (a?.item?.orderIndex ?? 0) - (b?.item?.orderIndex ?? 0))
   }
 }
 
