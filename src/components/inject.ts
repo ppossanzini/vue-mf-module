@@ -1,45 +1,53 @@
-import Vue from "vue";
-import Component from "vue-class-component";
+import { computed, defineComponent } from "vue";
 import { CommonRegistry } from "../helpers/CommonRegistry";
 
-@Component({
+export default defineComponent({
+  name: "inject",
   props: {
     id: { default: null },
     type: { default: null, type: String },
     value: { default: null },
     name: { type: String, default: null },
-    names: { type: [], default: null },
+    names: { type: Array<string>, default: null },
     group: { type: String, default: null },
     metadata: { type: Object, default: null },
     disabled: { type: Boolean, default: false },
     readonly: { type: Boolean, default: false }
   },
-  template: `<div><component :is="c"  v-for="(c, idx) in Components" :disabled="disabled" :readonly="readonly" :key="idx" :id="id" :type="type" :metadata="metadata" v-model="Value" @click="click" @save="save" /></div>`
-})
-export default class Inject extends Vue {
+  setup(props, { emit }) {
 
-  id!: string | number | null;
-  type!: string | null;
-  value!: any;
-  name!: string | null;
-  names!: string[] | null;
-  group?: string;
-  metadata?: { [id: string]: any };
-  disabled!: boolean;
-  readonly!: boolean;
 
-  get Value() { return this.value }
-  set Value(v) { this.$emit("input", v); }
+    const Value = computed({
+      get: () => { return props.value },
+      set: (v) => { emit("input", v); }
+    })
 
-  get Components() {
+    const Components = computed(() => {
+      if (props.name)
+        return [CommonRegistry.Instance.getComponent(props.name, props.group)];
+      if (props.group)
+        return CommonRegistry.Instance.getGroupComponents(props.group, ...(props.names || []));
+      return CommonRegistry.Instance.getComponents(...(props.names || []));
+    });
 
-    if (this.name)
-      return [CommonRegistry.Instance.getComponent(this.name, this.group)];
-    if (this.group)
-      return CommonRegistry.Instance.getGroupComponents(this.group, ...(this.names || []));
-    return CommonRegistry.Instance.getComponents(...(this.names || []));
+    const click = (...args: any[]) => { emit('click', ...args) }
+    const save = (...args: any[]) => { emit('save', ...args) }
+
+    return {
+      id: props.id,
+      type: props.type,
+      value: props.value,
+      name: props.name,
+      names: props.names,
+      group: props.group,
+      metadata: props.metadata,
+      disabled: props.disabled,
+      readonly: props.readonly,
+      click,
+      save,
+      Components,
+      Value,
+    }
   }
 
-  click(...args: any[]) { this.$emit('click', ...args) }
-  save(...args: any[]) { this.$emit('save', ...args) }
-}
+});

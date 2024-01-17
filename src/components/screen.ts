@@ -1,27 +1,38 @@
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Component, computed, defineComponent, getCurrentInstance, onMounted, Ref, ref } from "vue";
 import { IProjectableModel, Projector } from "../helpers/Projector";
 
-@Component({
+export default defineComponent({
+  name: "screen",
   props: {
     name: { type: String, default: "defaultscreen" },
   },
-  template: `<div v-show="isVisible"><component v-if="currentView" v-bind:is="currentView" :value="model" :key="key"></component></div>`
+  setup(props, { expose }) {
+
+    const me = getCurrentInstance();
+
+    const currentView: Ref<Component> = ref(null!);
+    const model: Ref<IProjectableModel<any> | null> = ref(null!);
+
+    expose({ currentView, model })
+
+    const isVisible = computed(() => {
+      return currentView.value != null;
+    })
+
+    const currentViewUID = computed(() => {
+      return (currentView.value as any)?.__file
+    })
+
+    onMounted(() => {
+      Projector.Instance.setScreen((me as any).proxy, props.name);
+    })
+
+    return {
+      currentViewUID,
+      currentView,
+      model,
+      isVisible
+    }
+  },
+
 })
-export default class Screen extends Vue {
-  name!: string;
-  currentView: any = null;
-  model: IProjectableModel<any> | null = null;
-
-  get key() {
-    return `id-${this.model}`
-  }
-
-  get isVisible() {
-    return this.currentView != null;
-  }
-
-  mounted() {
-    Projector.Instance.setScreen(this, this.name);
-  }
-}

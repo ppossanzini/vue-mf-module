@@ -1,16 +1,15 @@
 const projectToDirective = {
 
-  inserted: (el: Element, bind) => {
+  inserted: (el: Element, bind: any) => {
     ScreensManager.Instance.injectTo(el, bind.arg);
   },
-  unbind: (el: Element, bind) => {
+  unbind: (el: Element, bind: any) => {
     ScreensManager.Instance.removeFrom(el, bind.arg)
   }
 }
 
-
 const screenDirective = {
-  bind: (el, binding) => {
+  bind: (el: any, binding: any) => {
     if (!el) return;
     ScreensManager.Instance.setScreen(el, binding.arg);
   }
@@ -40,7 +39,7 @@ export class ScreensManager {
     try { if (element) element.removeChild(domElement) } catch { }
   }
 
-  setScreen(screen, name: string = "defaultscreen") {
+  setScreen(screen: Element, name: string = "defaultscreen") {
     this.screens.set(name, screen);
   }
 }
