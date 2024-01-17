@@ -9,7 +9,7 @@
     "compile": "tsc",
     "build": "vue-tsc && vite build"
   },
-  "author": "Paolo Possanzini <ppossanzini@gmail.com>",
+  "author": "Paolo Possanzini <ppossanzini@gmail.com>, Veonline <github.com/veonline>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ppossanzini/vue-mf-module/issues"
