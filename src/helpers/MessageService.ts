@@ -26,6 +26,9 @@ export class MessageService {
 
   ask<T>(message: string, ...args: any[]): Promise<T> {
     return new Promise((resolve, reject) => {
+
+      setTimeout(reject, 10000);
+
       this.notifier.emit(`$ask-${message}`, {
         resolve,
         reject,

@@ -28,8 +28,8 @@ export const MenuNotifications = {
 
 export class MenuHelper {
 
-  private menuDefinitions: IMenuDefinition[] = [];
-  private menuStructure: { [key: string]: { [key: string]: string[] } } = {}
+  public menuDefinitions: IMenuDefinition[] = [];
+  public menuStructure: { [key: string]: { [key: string]: string[] } } = {}
   private notifications: TinyEmitter = new TinyEmitter();
   private static instance = new MenuHelper();
   public get Notifications() { return this.notifications; }
@@ -61,27 +61,36 @@ export class MenuHelper {
     this.notifications.emit(MenuNotifications.menuDefinitionAdded, menuDefinition);
   }
 
-  public moveMenu(name: string, parent: string, section: menuType) {
+  public moveMenu(section: menuType, name: string, parent: string, index: number = 999) {
 
     let result = this.menuDefinitions.find(i => i.name == name);
 
     if (result) {
+      result.orderIndex = index;
       // remove menu from existing positions:
-      for (const p of result?.parents ?? []) {
-        let currentparent = this.menuStructure[section][p];
-        if (currentparent) {
-          let r = currentparent.indexOf(name);
-          if (r >= 0) currentparent.splice(r, 1);
+      if (result.parents)
+        for (const p of result.parents) {
+          let currentparent = this.menuStructure[section][p];
+          if (currentparent) {
+            let r = currentparent.indexOf(name);
+            if (r >= 0) currentparent.splice(r, 1);
+          }
         }
-      }
+
+      if (this.menuStructure[section][name] && !this.menuStructure[section][name].length)
+        delete this.menuStructure[section][name];
+
+      result.parents = [];
 
       this.menuStructure[section][parent || name] = this.menuStructure[section][parent || name] || [];
-      this.menuStructure[section][parent].push(name)
+      if (parent) {
+        this.menuStructure[section][parent].push(name)
+        result.parents.push(parent);
+      }
     }
 
     return result;
   }
-
 
   public getMenuItem(name: string): IMenuDefinition | undefined {
     return this.menuDefinitions.find(i => i.name == name);
@@ -103,7 +112,11 @@ export class MenuHelper {
 
         children: element.map(i => this.menuDefinitions.find(m => m.name == i && (!m.hidden || !m.hidden())))
           .filter(i => !!i)
-          .sort((a, b) => (a?.orderIndex ?? 0) - (b?.orderIndex ?? 0))
+          .sort((a, b) => {
+            if (a && b && a.orderIndex && b.orderIndex && a.orderIndex > b.orderIndex) return 1;
+            if (a && b && a.orderIndex && b.orderIndex && a.orderIndex < b.orderIndex) return -1;
+            return 0
+          })
       };
 
       if (!!rr.item) {
@@ -112,8 +125,13 @@ export class MenuHelper {
         result.push(rr);
       }
     }
+
     return result.filter(i => !!i.item)
-      .sort((a, b) => (a?.item?.orderIndex ?? 0) - (b?.item?.orderIndex ?? 0))
+      .sort((a, b) => {
+        if (a && b && a.item && b.item && a.item.orderIndex && b.item.orderIndex && a.item.orderIndex > b.item.orderIndex) return 1;
+        if (a && b && a.item && b.item && a.item.orderIndex && b.item.orderIndex && a.item.orderIndex < b.item.orderIndex) return -1;
+        return 0
+      });
   }
 }
 
