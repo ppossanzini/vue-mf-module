@@ -16,7 +16,7 @@ function install(Vue: { component: any, directive: any }) {
   Vue.directive("projectTo", directives.projectToDirective);
   Vue.directive("validate", ValidateDirective as any);
 }
-interface IModuleInitializerWrapper {
+export interface IModuleInitializerWrapper {
   init(menu: MenuHelper,
     configuration: any
     , options: {

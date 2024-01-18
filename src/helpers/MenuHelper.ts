@@ -1,11 +1,12 @@
 import { TinyEmitter } from 'tiny-emitter';
+import { RouteParamsRaw } from 'vue-router';
 
 export interface IMenuDefinition {
   name: string,
   description: string,
   icon?: string,
   routeName?: string,
-  routeParams?: object,
+  routeParams?: RouteParamsRaw,
   featureflags?: string[],
   orderIndex?: number,
   parents?: string[],
