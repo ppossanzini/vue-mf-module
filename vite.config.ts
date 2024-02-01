@@ -14,17 +14,18 @@ export default defineConfig({
     dts({
       entryRoot: "./src/",
     })
-  ], 
+  ],
   build: {
     lib: {
       entry: "./src/index.ts",
       name: "VueMfModule",
       fileName: (format) => `index.js`,
+      formats: ["es"]
     },
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
       // into your library
-      external: ['vue'],
+      external: ['vue','vue-router'],
       output: {
         sourcemap: "inline",
         exports: "named",
