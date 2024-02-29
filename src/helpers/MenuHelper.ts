@@ -23,7 +23,8 @@ export enum menuType {
 }
 
 export const MenuNotifications = {
-  menuDefinitionAdded: 'newmenuitem'
+  menuDefinitionAdded: 'newmenuitem',
+  menuDefinitionMoved: 'menuitemmoved'
 }
 
 export class MenuHelper {
@@ -89,6 +90,7 @@ export class MenuHelper {
       }
     }
 
+    this.notifications.emit(MenuNotifications.menuDefinitionMoved, result);
     return result;
   }
 
